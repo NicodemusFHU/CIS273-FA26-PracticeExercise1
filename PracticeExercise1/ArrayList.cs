@@ -7,7 +7,8 @@ public class ArrayList : IList
 
     public ArrayList()
     {
-
+        array = new int[16];
+        length = 0;
     }
 
     /// <summary>
@@ -38,7 +39,13 @@ public class ArrayList : IList
     /// <param name="value">value to add to the list</param>
     public void Append(int value)
     {
-
+        array[length] = value;
+        length ++;
+        
+        if(length == array.Length)
+        {
+            Resize();
+        }
     }
 
     /// <summary>
@@ -48,7 +55,14 @@ public class ArrayList : IList
     /// <returns>true if value is in list; false otherwise</returns>
     public bool Contains(int value)
     {
-        return true;
+        for(int i=0; i < length; i++)
+        {
+            if(array[i] == value)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     // TODO
@@ -59,7 +73,14 @@ public class ArrayList : IList
     /// <returns>Index of first element with value; -1 if element is not found</returns>
     public int FirstIndexOf(int value)
     {
-        throw new NotImplementedException();
+        for(int i=0; i < length; i++)
+        {
+            if(array[i] == value)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     // TODO
@@ -91,8 +112,14 @@ public class ArrayList : IList
     /// <param name="value"></param>
     public void Prepend(int value)
     {
-        throw new NotImplementedException();
+        ShiftRight(0);
+        array[0] = value;
+        length++;
 
+        if(length == array.Length)
+        {
+            Resize();
+        }
     }
 
     // TODO
@@ -102,7 +129,12 @@ public class ArrayList : IList
     /// <param name="value">value of item to be removed</param>
     public void Remove(int value)
     {
-
+        int index = FirstIndexOf(value);
+    
+        if(index >= 0)
+        {
+            RemoveAt(index);
+        }
     }
 
     // TODO
@@ -113,7 +145,8 @@ public class ArrayList : IList
     /// <exception > Throws IndexOutOfRangeException </exception>
     public void RemoveAt(int index)
     {
-        throw new NotImplementedException();
+        ShiftLeft(index);
+        length--;
     }
 
     public override string ToString()
@@ -152,7 +185,7 @@ public class ArrayList : IList
     /// </summary>
     public void Clear()
     {
-
+        length = 0;
     }
 
     /// <summary>
@@ -166,7 +199,10 @@ public class ArrayList : IList
 
     private void ShiftRight(int startingIndex)
     {
-
+        for(int i=length-1; i >=startingIndex; i--)
+        {
+            array[i+1] = array[i];
+        }
     }
 
     private void ShiftLeft(int startingIndex)
